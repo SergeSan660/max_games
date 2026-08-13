@@ -37,5 +37,5 @@ jobs:
         run: |
           node --check runecaster/patches/v0.9.2.js
           grep -q 'findPath' runecaster/patches/v0.9.2.js
-          grep -q 'no corner' runecaster/patches/v0.9.2.js
+          grep -q 'Diagonal movement' runecaster/patches/v0.9.2.js
           grep -q 'RuneCasterNav' runecaster/patches/v0.9.2.js
