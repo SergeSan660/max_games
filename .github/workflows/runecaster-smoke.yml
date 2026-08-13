@@ -32,13 +32,26 @@ jobs:
           test -s runecaster/index.html
           test -s runecaster/play.html
           grep -q 'patches/v0.9.3.js' runecaster/index.html
+          grep -q 'patches/v0.9.4.js' runecaster/index.html
+          grep -q 'patches/v0.9.5.js' runecaster/index.html
           grep -q 'patches/v0.9.3.js' runecaster/play.html
+          grep -q 'patches/v0.9.4.js' runecaster/play.html
+          grep -q 'patches/v0.9.5.js' runecaster/play.html
       - name: Verify runtime patch syntax and pathfinding markers
         run: |
           node --check runecaster/patches/v0.9.3.js
+          node --check runecaster/patches/v0.9.4.js
+          node --check runecaster/patches/v0.9.5.js
           grep -q 'findPath' runecaster/patches/v0.9.3.js
           grep -q 'Diagonal movement' runecaster/patches/v0.9.3.js
           grep -q 'segmentClear' runecaster/patches/v0.9.3.js
           grep -q 'smoothPath' runecaster/patches/v0.9.3.js
           grep -q 'bestReachable' runecaster/patches/v0.9.3.js
           grep -q 'RuneCasterNav' runecaster/patches/v0.9.3.js
+      - name: Verify cooldown and cast-chain rules
+        run: |
+          grep -q '10 potential damage = 1 second cooldown' runecaster/patches/v0.9.5.js
+          grep -q 'chain("Spell Name")' runecaster/patches/v0.9.5.js
+          grep -q 'chain(slot) must use hotkey 1–5' runecaster/patches/v0.9.5.js
+          grep -q 'recursive spell loop detected' runecaster/patches/v0.9.5.js
+          grep -q 'mana disabled' runecaster/patches/v0.9.5.js
