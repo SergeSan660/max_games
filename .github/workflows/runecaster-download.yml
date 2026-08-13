@@ -1,0 +1,35 @@
+name: RuneCaster downloadable build
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/runecaster-download.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package current RuneCaster
+        run: |
+          mkdir -p dist/RuneCaster-v0.9.3
+          cp -R runecaster/* dist/RuneCaster-v0.9.3/
+          cat > dist/RuneCaster-v0.9.3/START_HERE.txt <<'EOF'
+          Rune//Caster v0.9.3
+
+          Because browsers block local fetch() from file:// pages, serve this folder over HTTP.
+
+          Python:
+            python -m http.server 8000
+
+          Then open:
+            http://localhost:8000/play.html
+          EOF
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RuneCaster-v0.9.3
+          path: dist/RuneCaster-v0.9.3
+          if-no-files-found: error
