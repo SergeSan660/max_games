@@ -1,0 +1,19 @@
+name: RuneCaster package trigger
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare package
+        run: |
+          mkdir -p dist/RuneCaster-v0.9.3
+          cp -R runecaster/* dist/RuneCaster-v0.9.3/
+          printf 'Rune//Caster v0.9.3\nRun with: python -m http.server 8000\nThen open http://localhost:8000/play.html\n' > dist/RuneCaster-v0.9.3/START_HERE.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RuneCaster-v0.9.3
+          path: dist/RuneCaster-v0.9.3
