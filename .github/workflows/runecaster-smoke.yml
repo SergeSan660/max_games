@@ -31,11 +31,14 @@ jobs:
           test -s index.html
           test -s runecaster/index.html
           test -s runecaster/play.html
-          grep -q 'patches/v0.9.2.js' runecaster/index.html
-          grep -q 'patches/v0.9.2.js' runecaster/play.html
+          grep -q 'patches/v0.9.3.js' runecaster/index.html
+          grep -q 'patches/v0.9.3.js' runecaster/play.html
       - name: Verify runtime patch syntax and pathfinding markers
         run: |
-          node --check runecaster/patches/v0.9.2.js
-          grep -q 'findPath' runecaster/patches/v0.9.2.js
-          grep -q 'Diagonal movement' runecaster/patches/v0.9.2.js
-          grep -q 'RuneCasterNav' runecaster/patches/v0.9.2.js
+          node --check runecaster/patches/v0.9.3.js
+          grep -q 'findPath' runecaster/patches/v0.9.3.js
+          grep -q 'Diagonal movement' runecaster/patches/v0.9.3.js
+          grep -q 'segmentClear' runecaster/patches/v0.9.3.js
+          grep -q 'smoothPath' runecaster/patches/v0.9.3.js
+          grep -q 'bestReachable' runecaster/patches/v0.9.3.js
+          grep -q 'RuneCasterNav' runecaster/patches/v0.9.3.js
