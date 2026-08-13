@@ -1,12 +1,17 @@
 # Rune//Caster
 
-Current imported baseline: **v0.9.1**.
+Current imported baseline: **v0.9.1**, with live compatibility patch **v0.9.2**.
 
 Rune//Caster is a browser game where a wizard programs custom spells, discovers spell APIs as magical artifacts, equips five spells for combat, and experiments with deliberately chaotic combinations.
 
-## Run locally
+## Playable file
 
-Serve the repository over HTTP and open `/runecaster/`.
+Serve the repository over HTTP and open either:
+
+- `/runecaster/`
+- `/runecaster/play.html`
+
+`play.html` is the explicit playable entry point. Both entries reconstruct the byte-preserved v0.9.1 game and then load `patches/v0.9.2.js`.
 
 For example:
 
@@ -14,17 +19,25 @@ For example:
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000/runecaster/`.
+Then open `http://localhost:8000/runecaster/play.html`.
 
-The current baseline is preserved as a compressed static snapshot so migration cannot alter gameplay. `runecaster/index.html` reconstructs the snapshot in the browser. Future work should first keep this baseline green, then progressively extract the spell compiler/runtime, game loop, rendering, arenas and multiplayer into maintainable source modules.
+## v0.9.2 fixes
+
+- enemy movement now uses grid-based A* pathfinding around dungeon and arena walls
+- diagonal navigation cannot cut through wall corners
+- enemies periodically re-plan when the player moves or when they appear stuck
+- focus/tab changes clear held keys so movement does not remain stuck
+- runtime faults are surfaced visibly instead of silently producing a frozen/blank game
+- the imported v0.9.1 snapshot remains unchanged as a regression baseline
 
 ## Verify
 
 ```bash
 python runecaster/verify_snapshot.py
+node --check runecaster/patches/v0.9.2.js
 ```
 
-The verifier checks the reconstructed game byte-for-byte against the imported v0.9.1 baseline and confirms that chain/spawn-attack spell support is present.
+CI verifies the unchanged snapshot, the playable entry points, patch injection, JavaScript syntax, and pathfinding markers.
 
 ## Current mechanics
 
@@ -37,9 +50,10 @@ The verifier checks the reconstructed game byte-for-byte against the imported v0
 - explosions, chain explosions, chained impact effects, shields and force fields
 - rays, cones, novas and elemental projectile visuals
 - campaign arenas and Arcane Archdruid progression
-- local two-player versus experiments
+- local two-player versus
 - free-range Spell Lab
+- A* enemy navigation
 
 ## Migration rule
 
-The GitHub repository is now the canonical development source. Do not create a separate downloadable HTML as the authoritative version; changes should land here first.
+The GitHub repository is the canonical development source. Changes should land here first rather than creating separate authoritative ZIP/HTML builds.
